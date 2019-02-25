@@ -1,8 +1,8 @@
 # github PR 날리는 법 (원격으로 일하기)
-## 시작
+## 시작하기
 협업을 하기 위해서는 작업한 내용을 공유하는 방법이 필요하다. 이를 위해 기획자라면 메일을 주고 받거나 ms office365와 같은 클라우드 기반의 문서작성 도구를 이용할 수 있다. 또는 Confluence와 같은 협업 wiki 도구를 이용할 수도 있다. 
 
-그럼 개발자들은 소스코드를 어떻게 관리할까? 개발자들은 효율적인 소스코드 관리를 위해 cvs, svn, git 등 다양한 소스 형상관리 도구를 개발해왔다. 그리고 현재는 대세는 git으로 이동하고 있다.
+그럼 개발자들은 소스코드를 어떻게 관리할까? 개발자들은 효율적인 소스코드 관리를 위해 cvs, svn, git 등 다양한 소스 형상관리 도구를 개발해왔다. 그리고 현재 대세는 git으로 이동하고 있다.
 
 지난 15년간 `cvs` vs `svn` vs `git`의 검색량 추이를 보면 아래와 같다.
 ![cvs_svn_git](cvs_svn_git_1.png)
@@ -20,7 +20,7 @@
 
 이 글에서는 `git`사용법이 아닌 `git`으로 협업하는 방법을 주로 다룰 것이다. 자세한 `git`의 사용법은 [git 사용법 (https://git-scm.com/docs)](https://git-scm.com/docs)을 참고하기 바란다. 시간이 없다면 [Roger Dudler 개발자가 작성한 간편 안내서 (https://rogerdudler.github.io/git-guide/index.ko.html)](https://rogerdudler.github.io/git-guide/index.ko.html)나 [github가 제공하는 cheat sheet(https://services.github.com/on-demand/downloads/github-git-cheat-sheet.pdf)](https://services.github.com/on-demand/downloads/github-git-cheat-sheet.pdf)도 좋은 대안이다.
 
-## 의미
+## PR(PullRequest) 의미
 PR(Pull Request)은 직역하자면 Pull을 해달라는 요청이다.
 
 Pull ? git 에서 다른 저장소의 소스를 당겨오는(pull) 액션
@@ -38,7 +38,7 @@ Pull ? git 에서 다른 저장소의 소스를 당겨오는(pull) 액션
 ## 소스코드 관리
 Pull Request를 사용할지 말지에 대해서 정하기 전에 소스코드 관리를 어떻게 할지에 대해서 먼저 정해야 한다. 소스코드 관리 정책이 정해져야 Pull Request가 왜 필요한지, 어떻게 써야할지를 알 수 있기 때문이다.
 
-필자는 소스코드 관리 정책을 3가지 요소를 고려하여 4개 레벨로 분류한다.
+필자는 소스코드 관리 정책을 정할 때 3가지 요소를 고려하여 4개 레벨로 분류한다.
 
 - 요소
 	- 개발조직의 크기
@@ -47,6 +47,7 @@ Pull Request를 사용할지 말지에 대해서 정하기 전에 소스코드 �
 
 ### level_1
 가장 간략한 단계로 하나의 브랜치만 사용하는 전략이다. 보통 master만 사용한다.
+![git_level_1](git_level_1.png)
 
 - 장점 : 
 	- git 이해도가 낮아도 쉽게 접근할 수 있다.
@@ -60,6 +61,7 @@ Pull Request를 사용할지 말지에 대해서 정하기 전에 소스코드 �
 
 ### level_2.1
 level_1에서 한단계 진화한 것으로 3가지 브랜치(develop, release, master)를 사용한다.
+![git_level_2_1](git_level_2_1.png)
 
 - 장점 :
 	- level_1 보다 소스코드 관리가 한결 깔끔해졌다. 브랜치별로 권한을 분리할 수 있으니 PO(Product Owner)가 master 브랜치에 merge되는 소스코드를 제어할 수 있다.
@@ -75,6 +77,8 @@ level_1에서 한단계 진화한 것으로 3가지 브랜치(develop, release, 
 level_1에서 한단계 진화한 것으로 1+n개 브랜치(master + @)를 사용한다.
 
 master를 언제나 배포가능한 clean 상태로 유지하며 모든 개발은 이외의 브랜치에서 진행하고, 이를 검수를 통해 master로 merge하는 전략이다. 이를 [github-flow](https://guides.github.com/introduction/flow/)라고 부른다.
+![git_level_2_2](git_level_2_2.png)
+[그림 출처 : https://guides.github.com/introduction/flow/]
 
 - 장점 : 
 	- level_1 에서 히스토리가 한줄로 나오던 것을 병합(rebase)해서 관리할 수 있다.
@@ -89,6 +93,7 @@ master를 언제나 배포가능한 clean 상태로 유지하며 모든 개발�
 level_2에서 한단계 진화한 것으로 5가지 브랜치(develop, feature, release, hotfix, master)를 사용한다.
 
 기업에서는 이 전략을 채택하려고 노력하며, 이렇게 관리하는 것을 보통 git-flow라고 많이 부른다. (git-flow는 Vincent Driessen가 고안한 소스코드 관리 방안이다. https://nvie.com/posts/a-successful-git-branching-model/)
+![git_level_3](git_level_3.png)
 
 - 장점 :
 	- 브랜치를 세분화한 만큼 소스코드에 대한 권한관리도 세분화하여 관리가 가능하다.
@@ -99,3 +104,15 @@ level_2에서 한단계 진화한 것으로 5가지 브랜치(develop, feature, 
 	- 절차가 많아진 만큼 git에 대한 높은 이해도가 요구된다.
 	- git 이해도가 따라오지 않으면 대혼란을 야기할 수 있다.
 
+## PR이 필요한 이유
+그렇다면 PR이 왜 필요한지 생각해보자. Pull Request는 의미 그대로 "나의 코드를 fetch해서 메인 브랜치에 merge 해달라."는 것이다. 숨은 의미를 생각해보면 "나의 코드를 fetch해서 **코드/로직을 확인해보고** 적용해도 된다면 메인 브랜치에 merge 해달라."는 것이다. 여기서 나는 메인 브랜치에 push 권한이 있을 수도 있고 없을 수도 있다. 정책상 엄격하게 권한을 제한하여 PR을 강제할 수도 있고 아닐 수도 있다. 다만 여기서 중요한 것은 협업 프로세스에 의해 메인브랜치에 merge하기 전에 동료들과 코드 검토를 하기 위해 PR을 날리는 것이다. 즉 PR은 동료들과 코드리뷰를 하기 위해 사용하는 하나의 도구인 것이다.
+
+## github PR 날리는 방법
+
+### branch 생성
+
+### PR생성
+
+#### PR 코드 사이즈
+
+### 코드리뷰
