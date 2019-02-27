@@ -127,7 +127,9 @@ level_2에서 한단계 진화한 것으로 5가지 브랜치(develop, feature, 
 
 ### PR생성
 개발을 완료한 후 수정사항을 remote 브랜치에 push한 후 PR을 통해 메인브랜치로 merge 요청을 보낼 수 있다.
-
+git add -A
+git commit -m "PR방법 수정"
+git push origin master
 
 #### PR 코드 사이즈
 
